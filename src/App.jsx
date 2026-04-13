@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import Chat from './pages/Chat'
 import Lesson from './pages/Lesson'
@@ -11,7 +11,7 @@ import Cloud from './pages/Cloud'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/chat" replace />} />
@@ -25,6 +25,6 @@ export default function App() {
           <Route path="/cloud" element={<Cloud />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
