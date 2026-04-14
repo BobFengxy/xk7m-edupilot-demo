@@ -26,7 +26,7 @@ export default function Works() {
   const [active, setActive] = useState('全部作品')
 
   return (
-    <div className="p-6 fade-in-up">
+    <div className="h-full overflow-auto p-6 fade-in-up">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-lg font-semibold text-gray-800">我的作品</h1>

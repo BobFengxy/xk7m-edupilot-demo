@@ -33,7 +33,7 @@ export default function Classroom() {
   const [expanded, setExpanded] = useState({})
 
   return (
-    <div className="flex h-[calc(100vh-52px)] fade-in-up">
+    <div className="flex h-full fade-in-up">
       {/* Left config */}
       <div className="w-[280px] bg-white border-r border-gray-100 p-5 shrink-0 overflow-y-auto">
         <h2 className="text-[15px] font-semibold text-gray-800 mb-4">组卷配置</h2>

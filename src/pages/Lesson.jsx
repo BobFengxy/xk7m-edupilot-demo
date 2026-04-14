@@ -53,7 +53,7 @@ export default function Lesson() {
   const slide = slides[currentSlide - 1]
 
   return (
-    <div className="flex h-[calc(100vh-52px)] fade-in-up">
+    <div className="flex h-full fade-in-up">
       {/* Left sidebar - Steps */}
       <div className="w-[200px] bg-white border-r border-gray-100 p-4 shrink-0">
         <div className="text-[12px] text-gray-400 font-medium mb-4 uppercase tracking-wider">备课流程</div>

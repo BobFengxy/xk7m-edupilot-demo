@@ -62,7 +62,7 @@ export default function Homework() {
 
   if (!uploaded) {
     return (
-      <div className="p-6 fade-in-up">
+      <div className="h-full overflow-auto p-6 fade-in-up">
         <h1 className="text-lg font-semibold text-gray-800 mb-2">学情分析</h1>
         <p className="text-[13px] text-gray-500 mb-6">上传作业进行智能批改与学情分析</p>
         <div className="max-w-lg mx-auto mt-12">
@@ -90,7 +90,7 @@ export default function Homework() {
   }
 
   return (
-    <div className="p-6 fade-in-up">
+    <div className="h-full overflow-auto p-6 fade-in-up">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-lg font-semibold text-gray-800">学情分析</h1>

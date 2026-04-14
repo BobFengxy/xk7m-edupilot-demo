@@ -61,7 +61,7 @@ export default function Chat() {
   // Workspace mode (split view)
   if (workspaceOpen) {
     return (
-      <div className="flex h-[calc(100vh-56px)] fade-in-up">
+      <div className="flex h-full fade-in-up">
         {/* Left: chat thread */}
         <div className="w-[42%] min-w-[380px] flex flex-col border-r border-gray-100 bg-white">
           <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
@@ -304,7 +304,7 @@ export default function Chat() {
 
   // Clean homepage
   return (
-    <div className="min-h-full flex flex-col items-center px-6 pt-16 pb-8 fade-in-up">
+    <div className="h-full overflow-auto flex flex-col items-center px-6 pt-16 pb-8 fade-in-up">
       {/* Greeting */}
       <div className="w-full max-w-[720px] text-center mb-8">
         <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-200/60">

@@ -86,7 +86,7 @@ export default function Cloud() {
   const [activeTab, setActiveTab] = useState('files')
 
   return (
-    <div className="flex h-[calc(100vh-52px)] fade-in-up">
+    <div className="flex h-full fade-in-up">
       {/* Folder tree */}
       <div className="w-[200px] bg-white border-r border-gray-100 p-4 shrink-0">
         <div className="flex items-center justify-between mb-3">
