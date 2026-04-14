@@ -21,7 +21,7 @@ const recentChats = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-[220px] min-h-screen bg-white border-r border-gray-100 flex flex-col shrink-0">
+    <aside className="w-[220px] h-full bg-white border-r border-gray-100 flex flex-col shrink-0">
       {/* Logo */}
       <div className="px-5 py-4 flex items-center gap-2.5">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center">
@@ -31,7 +31,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-2">
+      <nav className="flex-1 px-3 py-2 overflow-y-auto min-h-0">
         <div className="text-[11px] text-gray-400 font-medium px-2 mb-1.5 uppercase tracking-wider">功能导航</div>
         {navItems.map(({ path, icon: Icon, label }) => (
           <NavLink

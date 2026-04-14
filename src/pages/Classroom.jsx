@@ -109,7 +109,7 @@ export default function Classroom() {
       </div>
 
       {/* Right questions */}
-      <div className="flex-1 p-5 overflow-y-auto">
+      <div className="flex-1 p-5 overflow-y-auto min-h-0 min-w-0">
         {/* Keyword search (per 合作人反馈) */}
         <div className="mb-4 bg-white rounded-2xl border border-gray-100 p-3 flex items-center gap-2">
           <Search className="w-4 h-4 text-gray-400 ml-1" />

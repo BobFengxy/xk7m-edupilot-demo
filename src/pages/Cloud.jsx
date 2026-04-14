@@ -118,7 +118,7 @@ export default function Cloud() {
       </div>
 
       {/* Main */}
-      <div className="flex-1 p-5 overflow-auto">
+      <div className="flex-1 p-5 overflow-auto min-h-0 min-w-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
             <button onClick={() => setActiveTab('files')} className={`px-4 py-1.5 text-[13px] rounded-md transition-all ${activeTab === 'files' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'text-gray-600'}`}>

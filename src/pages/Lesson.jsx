@@ -55,7 +55,7 @@ export default function Lesson() {
   return (
     <div className="flex h-full fade-in-up">
       {/* Left sidebar - Steps */}
-      <div className="w-[200px] bg-white border-r border-gray-100 p-4 shrink-0">
+      <div className="w-[200px] bg-white border-r border-gray-100 p-4 shrink-0 overflow-y-auto">
         <div className="text-[12px] text-gray-400 font-medium mb-4 uppercase tracking-wider">备课流程</div>
         {steps.map((step, i) => (
           <div key={step.id} className="flex items-start gap-3 mb-1">
@@ -110,7 +110,7 @@ export default function Lesson() {
       </div>
 
       {/* Main content - PPT Preview */}
-      <div className="flex-1 flex flex-col min-w-0 bg-bg-base">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-bg-base">
         {/* Toolbar */}
         <div className="flex items-center justify-between px-5 py-3 bg-white border-b border-gray-100">
           <div className="flex items-center gap-3">
@@ -186,7 +186,7 @@ export default function Lesson() {
           </div>
 
           {/* Main preview */}
-          <div className="flex-1 p-6 flex flex-col items-center min-w-0">
+          <div className="flex-1 p-6 flex flex-col items-center min-w-0 min-h-0 overflow-auto">
             {/* Navigation */}
             <div className="flex items-center gap-4 mb-4">
               <button onClick={() => setCurrentSlide(Math.max(1, currentSlide - 1))} className="p-1.5 hover:bg-white rounded-lg transition-colors">
