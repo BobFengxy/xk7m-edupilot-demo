@@ -1,17 +1,15 @@
 import { NavLink } from 'react-router-dom'
 import {
-  MessageSquare, BookOpen, FolderOpen, Search, ClipboardList,
-  BarChart3, Bot, Cloud, Sparkles, Clock, User, ChevronRight
+  MessageSquare, BookOpen, FolderOpen, ClipboardList,
+  BarChart3, Cloud, Sparkles, Clock, User, ChevronRight
 } from 'lucide-react'
 
 const navItems = [
-  { path: '/chat', icon: MessageSquare, label: 'AI 对话中心', hot: true },
-  { path: '/lesson', icon: BookOpen, label: '教学设计', hot: true },
+  { path: '/chat', icon: MessageSquare, label: 'AI 对话中心' },
+  { path: '/lesson', icon: BookOpen, label: '教学设计' },
   { path: '/works', icon: FolderOpen, label: '课件管理' },
-  { path: '/knowledge', icon: Search, label: '资源检索' },
   { path: '/classroom', icon: ClipboardList, label: '搜题组卷' },
-  { path: '/homework', icon: BarChart3, label: '课堂分析', hot: true },
-  { path: '/agents', icon: Bot, label: '智能体中心' },
+  { path: '/homework', icon: BarChart3, label: '学情分析' },
   { path: '/cloud', icon: Cloud, label: '我的云盘' },
 ]
 
@@ -30,29 +28,30 @@ export default function Sidebar() {
           <Sparkles className="w-4.5 h-4.5 text-white" />
         </div>
         <span className="text-[15px] font-semibold text-gray-900 tracking-tight">Edu-Pilot</span>
-        <span className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-medium ml-auto">Beta</span>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-2">
         <div className="text-[11px] text-gray-400 font-medium px-2 mb-1.5 uppercase tracking-wider">功能导航</div>
-        {navItems.map(({ path, icon: Icon, label, hot }) => (
+        {navItems.map(({ path, icon: Icon, label }) => (
           <NavLink
             key={path}
             to={path}
             className={({ isActive }) =>
-              `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] mb-0.5 transition-all duration-150 group ${
+              `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] mb-0.5 transition-all duration-150 ${
                 isActive
-                  ? 'bg-blue-50 text-blue-600 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'font-medium'
+                  : 'hover:bg-[#e0f2fe]/60'
               }`
+            }
+            style={({ isActive }) =>
+              isActive
+                ? { backgroundColor: '#e0f2fe', color: '#2563eb' }
+                : { color: '#4b5563' }
             }
           >
             <Icon className="w-4 h-4 shrink-0" />
             <span>{label}</span>
-            {hot && (
-              <span className="ml-auto text-[9px] bg-orange-100 text-orange-500 px-1.5 py-0.5 rounded-full font-bold">HOT</span>
-            )}
           </NavLink>
         ))}
 

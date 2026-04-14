@@ -51,7 +51,7 @@ const practiceQuestions = [
 ]
 
 export default function Homework() {
-  const [uploaded, setUploaded] = useState(true)
+  const [uploaded, setUploaded] = useState(false)
   const [activeTab, setActiveTab] = useState('class')
 
   const tabs = [
@@ -63,7 +63,7 @@ export default function Homework() {
   if (!uploaded) {
     return (
       <div className="p-6 fade-in-up">
-        <h1 className="text-lg font-semibold text-gray-800 mb-2">课堂分析</h1>
+        <h1 className="text-lg font-semibold text-gray-800 mb-2">学情分析</h1>
         <p className="text-[13px] text-gray-500 mb-6">上传作业进行智能批改与学情分析</p>
         <div className="max-w-lg mx-auto mt-12">
           <div
@@ -74,6 +74,16 @@ export default function Homework() {
             <p className="text-[14px] text-gray-600 font-medium mb-1">拖拽上传作业图片或PDF</p>
             <p className="text-[12px] text-gray-400">支持 JPG、PNG、PDF 格式，可批量上传</p>
           </div>
+          <div className="mt-4 flex items-start gap-3 p-4 bg-blue-50 rounded-2xl border border-blue-100">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="text-[13px] font-medium text-blue-700 mb-1">需要我帮您自动批改吗？</div>
+              <p className="text-[12px] text-gray-600">上传后 AI 将主动发起 OCR 识别、评分、共性错误归因，并生成学情雷达图。</p>
+            </div>
+            <button onClick={() => setUploaded(true)} className="shrink-0 px-3 py-1.5 bg-blue-600 text-white text-[12px] rounded-lg hover:bg-blue-700 transition-colors">确认批改</button>
+          </div>
         </div>
       </div>
     )
@@ -83,7 +93,7 @@ export default function Homework() {
     <div className="p-6 fade-in-up">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-lg font-semibold text-gray-800">课堂分析</h1>
+          <h1 className="text-lg font-semibold text-gray-800">学情分析</h1>
           <p className="text-[13px] text-gray-500 mt-0.5">高二(3)班 · 力学单元测试 · AI批改完成</p>
         </div>
       </div>
@@ -132,7 +142,8 @@ export default function Homework() {
 
       {/* Tab content */}
       {activeTab === 'class' && (
-        <div className="grid grid-cols-2 gap-5 slide-in">
+        <>
+        <div className="grid grid-cols-2 gap-5 slide-in mb-5">
           {/* Top errors */}
           <div className="bg-white rounded-xl p-5 border border-gray-100">
             <h3 className="text-[14px] font-medium text-gray-800 mb-4">Top 3 共性错误</h3>
@@ -155,11 +166,6 @@ export default function Homework() {
               </div>
               <p className="text-[12px] text-gray-600">受力分析、加速度方向判断</p>
             </div>
-            <button className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-[12px] font-medium rounded-lg hover:opacity-90 transition-opacity">
-              <Sparkles className="w-3.5 h-3.5" />
-              针对薄弱点生成补偿课件
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
           </div>
 
           {/* Bar chart */}
@@ -178,6 +184,23 @@ export default function Homework() {
             </div>
           </div>
         </div>
+
+        {/* 终极闭环 CTA: 错题转课件 */}
+        <div className="rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 p-[1.5px] shadow-lg shadow-blue-200/40">
+          <div className="rounded-2xl bg-white p-5 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center shrink-0 shadow-md shadow-blue-200">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="text-[15px] font-semibold text-gray-800 mb-0.5">将共性错题转化为下节课复习大纲</div>
+              <div className="text-[12px] text-gray-500">携带 73% 受力分析、60% 加速度方向 错题数据，一键生成针对性补救课件，打通「测-评-练-教」闭环</div>
+            </div>
+            <button className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-[13px] font-medium rounded-xl hover:opacity-90 transition-opacity shrink-0">
+              生成补救课件 <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        </>
       )}
 
       {activeTab === 'student' && (

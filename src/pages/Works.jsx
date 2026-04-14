@@ -60,7 +60,7 @@ export default function Works() {
       {/* Grid */}
       <div className="grid grid-cols-3 gap-4">
         {works.map((work, i) => (
-          <div key={i} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+          <div key={i} className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
             <div className={`bg-gradient-to-br ${work.gradient} h-[140px] p-5 flex flex-col justify-end relative`}>
               <span className="absolute top-3 right-3 text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">{work.tag}</span>
               <h3 className="text-white font-medium text-[14px]">{work.title}</h3>

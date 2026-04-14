@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp, Search } from 'lucide-react'
 
 const questions = [
   {
@@ -110,6 +110,16 @@ export default function Classroom() {
 
       {/* Right questions */}
       <div className="flex-1 p-5 overflow-y-auto">
+        {/* Keyword search (per 合作人反馈) */}
+        <div className="mb-4 bg-white rounded-2xl border border-gray-100 p-3 flex items-center gap-2">
+          <Search className="w-4 h-4 text-gray-400 ml-1" />
+          <input
+            placeholder="输入关键词精准搜题（知识点、题型、年份、来源）..."
+            className="flex-1 text-[13px] text-gray-700 placeholder-gray-400 bg-transparent outline-none"
+          />
+          <button className="px-3 py-1 text-[12px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">搜题</button>
+        </div>
+
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[15px] font-medium text-gray-800">题目列表 <span className="text-gray-400 text-[13px]">({questions.length}题)</span></h2>
           <div className="flex gap-2">

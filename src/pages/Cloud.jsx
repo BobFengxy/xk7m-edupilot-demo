@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import {
   Folder, FolderOpen, FileText, Image, Film, Upload, File,
-  Plus, MoreHorizontal, HardDrive, Network
+  Plus, MoreHorizontal, HardDrive, Network, Sparkles
 } from 'lucide-react'
 
 const folders = [
@@ -145,7 +145,7 @@ export default function Cloud() {
                 MD: 'bg-gray-100 text-gray-600',
               }
               return (
-                <div key={i} className="bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group">
+                <div key={i} className="bg-white rounded-2xl border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
                   <div className="flex items-start justify-between mb-3">
                     <div className={`w-10 h-10 rounded-lg ${typeColors[f.type] || 'bg-gray-100 text-gray-600'} flex items-center justify-center`}>
                       {f.type === '视频' ? <Film className="w-5 h-5" /> :
@@ -157,10 +157,15 @@ export default function Cloud() {
                     </button>
                   </div>
                   <h3 className="text-[13px] font-medium text-gray-800 truncate mb-1">{f.name}</h3>
-                  <div className="flex items-center justify-between text-[11px] text-gray-400">
+                  <div className="flex items-center justify-between text-[11px] text-gray-400 mb-3">
                     <span>{f.size}</span>
                     <span>{f.date}</span>
                   </div>
+                  {(f.type === 'PPT' || f.type === 'Word') && (
+                    <button className="w-full flex items-center justify-center gap-1 py-1.5 text-[11px] text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors font-medium">
+                      <Sparkles className="w-3 h-3" /> AI 编辑
+                    </button>
+                  )}
                 </div>
               )
             })}
