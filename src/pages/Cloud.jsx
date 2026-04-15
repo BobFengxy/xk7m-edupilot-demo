@@ -1,25 +1,32 @@
 import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   Folder, FolderOpen, FileText, Image, Film, Upload, File,
-  Plus, MoreHorizontal, HardDrive, Network, Sparkles
+  Plus, MoreHorizontal, HardDrive, Network, Sparkles, Database, Download
 } from 'lucide-react'
 
 const folders = [
-  { name: '全部文件', count: 32, open: true },
-  { name: '课件资源', count: 12 },
-  { name: '教案文档', count: 8 },
-  { name: '试卷题库', count: 6 },
-  { name: '实验素材', count: 4 },
-  { name: '学生作业', count: 2 },
+  { name: '全部文件', count: 21, open: true },
+  { name: '课件资源', count: 8 },
+  { name: '教案文档', count: 5 },
+  { name: '试卷题库', count: 4 },
+  { name: '实验素材', count: 3 },
+  { name: '学生作业', count: 1 },
 ]
 
 const files = [
-  { name: '力学单元测试.docx', type: 'Word', size: '0.5 MB', date: '2025-04-12' },
-  { name: '电磁感应PPT.pptx', type: 'PPT', size: '8.2 MB', date: '2025-04-10' },
-  { name: '单摆运动视频.mp4', type: '视频', size: '120 MB', date: '2025-04-08' },
-  { name: '受力分析图.png', type: '图片', size: '1.1 MB', date: '2025-04-06' },
-  { name: '高考物理大纲.pdf', type: 'PDF', size: '4.5 MB', date: '2025-04-04' },
-  { name: '物理公式手册.md', type: 'MD', size: '0.1 MB', date: '2025-04-02' },
+  { name: '平抛运动PPT.pptx', type: 'PPT', size: '6.8 MB', date: '2026-04-14' },
+  { name: '平抛运动教案.docx', type: 'Word', size: '0.4 MB', date: '2026-04-14' },
+  { name: '牛顿第二定律课件.pptx', type: 'PPT', size: '7.3 MB', date: '2026-04-12' },
+  { name: '匀变速直线运动实验.mp4', type: '视频', size: '95 MB', date: '2026-04-10' },
+  { name: '力学单元测试.docx', type: 'Word', size: '0.5 MB', date: '2026-04-08' },
+  { name: '电磁感应PPT.pptx', type: 'PPT', size: '8.2 MB', date: '2026-04-06' },
+  { name: '圆周运动课件.pptx', type: 'PPT', size: '5.1 MB', date: '2026-04-05' },
+  { name: '机械能守恒教案.docx', type: 'Word', size: '0.3 MB', date: '2026-04-03' },
+  { name: '单摆运动视频.mp4', type: '视频', size: '120 MB', date: '2026-04-02' },
+  { name: '受力分析图.png', type: '图片', size: '1.1 MB', date: '2026-04-01' },
+  { name: '高考物理大纲.pdf', type: 'PDF', size: '4.5 MB', date: '2026-03-28' },
+  { name: '物理公式手册.md', type: 'MD', size: '0.1 MB', date: '2026-03-25' },
 ]
 
 const graphNodes = [
@@ -82,8 +89,39 @@ function KnowledgeGraph() {
   return <canvas ref={canvasRef} style={{ width: '100%', height: 380 }} className="rounded-xl" />
 }
 
+function downloadRagPack() {
+  // Demo: generate a JSON descriptor on the fly and download.
+  const pack = {
+    name: '人教版高中物理 RAG 知识库',
+    version: '1.0.0',
+    description: '对标人教版高中物理必修一、必修二、选择性必修全册，已完成文本分块与向量化',
+    modules: ['教材知识点', '高考考纲', '经典题库', '教学案例', '实验素材'],
+    chunks: 1284,
+    embedding_dim: 1024,
+    deploy: 'pip install -r requirements.txt && python start_rag.py',
+    note: '本次下载为演示描述包；完整 Chroma 向量库将通过赛题交付渠道提供。',
+  }
+  const blob = new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = '人教版高中物理RAG知识库_descriptor.json'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 export default function Cloud() {
+  const [searchParams] = useSearchParams()
   const [activeTab, setActiveTab] = useState('files')
+  const [highlightRag, setHighlightRag] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'rag') {
+      setHighlightRag(true)
+      const t = setTimeout(() => setHighlightRag(false), 2500)
+      return () => clearTimeout(t)
+    }
+  }, [searchParams])
 
   return (
     <div className="flex h-full fade-in-up">
@@ -134,6 +172,37 @@ export default function Cloud() {
         </div>
 
         {activeTab === 'files' ? (
+          <>
+          {/* RAG pack — prominent card */}
+          <div className={`mb-4 p-4 rounded-2xl border transition-all ${
+            highlightRag ? 'border-violet-400 bg-gradient-to-r from-violet-50 to-blue-50 ring-4 ring-violet-200' :
+            'border-violet-200 bg-gradient-to-r from-violet-50/60 to-blue-50/60'
+          }`}>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0">
+                <Database className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-[14px] font-semibold text-gray-800">人教版高中物理 RAG 知识库</h3>
+                  <span className="text-[10px] px-2 py-0.5 bg-violet-600 text-white rounded-full">赛题必备</span>
+                  <span className="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-600 rounded-full">可下载 · 可部署</span>
+                </div>
+                <p className="text-[12px] text-gray-600 mb-2">
+                  对标人教版全册，1284 个知识分块，已向量化（1024 维），一键部署到本地 Chroma，满足赛题「本地知识库 RAG」强制要求。
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={downloadRagPack}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 text-white text-[12px] rounded-lg hover:bg-violet-700"
+                  >
+                    <Download className="w-3.5 h-3.5" /> 一键下载（演示描述包）
+                  </button>
+                  <span className="text-[11px] text-gray-400">~12.4 MB · requirements + start_rag.py + chroma_db/</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-3 gap-3">
             {files.map((f, i) => {
               const typeColors = {
@@ -170,6 +239,7 @@ export default function Cloud() {
               )
             })}
           </div>
+          </>
         ) : (
           <div className="bg-white rounded-xl border border-gray-100 p-5">
             <h3 className="text-[14px] font-medium text-gray-800 mb-4">知识点关联图谱</h3>
