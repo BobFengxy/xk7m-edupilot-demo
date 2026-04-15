@@ -2,8 +2,9 @@ import { useState } from 'react'
 import {
   Check, ChevronLeft, ChevronRight, Download, Eye, Sparkles,
   GripVertical, Gamepad2, Film, ArrowRight, BookOpen,
-  FileText, RotateCcw, MessageSquare, Loader2
+  FileText, RotateCcw, MessageSquare, Loader2, SendHorizontal
 } from 'lucide-react'
+import ProjectileAnimation from '../components/ProjectileAnimation'
 
 const steps = [
   { id: 1, label: '输入主题', status: 'done' },
@@ -118,7 +119,7 @@ export default function Lesson() {
               <Check className="w-3.5 h-3.5" />
               生成完成
             </div>
-            <span className="text-[13px] text-gray-800 font-medium">电磁感应与电磁阻尼 — 教学课件</span>
+            <span className="text-[13px] text-gray-800 font-medium">平抛运动 — 教学课件</span>
           </div>
           <div className="flex items-center gap-2">
             <button className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
@@ -222,59 +223,14 @@ export default function Lesson() {
             {/* Slide content */}
             <div className="w-full max-w-[780px] aspect-[16/10] bg-white rounded-xl shadow-lg overflow-hidden relative slide-in">
               {slide?.type === 'interactive' ? (
-                /* Interactive physics simulation */
-                <div className="h-full flex flex-col">
-                  <div className="bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Gamepad2 className="w-4 h-4 text-white" />
-                      <span className="text-white font-medium text-[14px]">互动实验：电磁阻尼仿真</span>
-                    </div>
-                    <span className="text-[11px] text-white/70 bg-white/15 px-2 py-0.5 rounded-full">Canvas交互</span>
-                  </div>
-                  <div className="flex-1 bg-gradient-to-b from-slate-900 to-slate-800 p-6 flex items-center justify-center relative">
-                    {/* Simulated physics canvas */}
-                    <div className="text-center">
-                      <div className="relative inline-block">
-                        <div className="w-48 h-48 border-2 border-cyan-400/40 rounded-lg flex items-center justify-center relative">
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            {[...Array(5)].map((_, i) => (
-                              <div key={i} className="absolute w-full h-px bg-cyan-400/20" style={{ transform: `rotate(${i * 36}deg)` }} />
-                            ))}
-                          </div>
-                          <div className="w-8 h-24 bg-gradient-to-b from-red-500 to-blue-500 rounded-sm shadow-lg shadow-cyan-400/20"
-                            style={{ transform: `translateX(${(difficulty - 50) * 0.3}px)` }}
-                          />
-                          <div className="absolute -left-2 -right-2 top-1/2 h-16 -translate-y-1/2 border border-dashed border-yellow-400/30 rounded" />
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-center gap-6">
-                        <div className="text-center">
-                          <div className="text-[11px] text-cyan-300/70">磁场强度 B</div>
-                          <div className="text-[18px] text-cyan-300 font-mono">{(difficulty / 100 * 2).toFixed(1)} T</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-[11px] text-yellow-300/70">阻尼力 F</div>
-                          <div className="text-[18px] text-yellow-300 font-mono">{(difficulty / 100 * 5.2).toFixed(1)} N</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-[11px] text-emerald-300/70">涡流 I</div>
-                          <div className="text-[18px] text-emerald-300 font-mono">{(difficulty / 100 * 3.8).toFixed(1)} A</div>
-                        </div>
-                      </div>
-                      <div className="mt-3 flex items-center justify-center gap-2">
-                        <span className="text-[11px] text-gray-400">拖拽滑块调整磁场强度</span>
-                        <ArrowRight className="w-3 h-3 text-gray-500" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ProjectileAnimation />
               ) : slide?.type === 'cover' ? (
                 <div className="h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 flex flex-col items-center justify-center p-10">
                   <div className="w-14 h-14 mb-4 rounded-2xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
                     <BookOpen className="w-7 h-7 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold text-white mb-2">电磁感应与电磁阻尼</h2>
-                  <p className="text-white/70 text-[14px] mb-6">高中物理 · 必修三 · 第四章</p>
+                  <h2 className="text-3xl font-bold text-white mb-2">平抛运动</h2>
+                  <p className="text-white/70 text-[14px] mb-6">高中物理 · 必修一 · 运动的合成与分解</p>
                   <div className="flex gap-3">
                     <span className="text-[12px] text-white/60 bg-white/10 px-3 py-1 rounded-full">2课时</span>
                     <span className="text-[12px] text-white/60 bg-white/10 px-3 py-1 rounded-full">高二年级</span>

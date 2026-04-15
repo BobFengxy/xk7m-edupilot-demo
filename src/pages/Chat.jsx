@@ -1,24 +1,32 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Search, BarChart3, BookOpen, ClipboardList, Sparkles,
   Mic, Paperclip, Camera, SendHorizontal, Wifi, Brain,
   Check, Loader2, Eye, ArrowRight, FileText, Save, X,
-  Edit3, Wand2, RefreshCw
+  Edit3, Wand2, RefreshCw, Download
 } from 'lucide-react'
+import { detectIntent } from '../lib/deepseek'
 
 const quickTags = [
-  { icon: BookOpen, label: '教学设计' },
-  { icon: BarChart3, label: '课件生成' },
-  { icon: ClipboardList, label: '搜题组卷' },
-  { icon: Sparkles, label: '学情分析' },
+  { icon: BookOpen, label: '教学设计', path: '/lesson' },
+  { icon: BarChart3, label: '课件生成', path: '/lesson' },
+  { icon: ClipboardList, label: '搜题组卷', path: '/classroom' },
+  { icon: Sparkles, label: '学情分析', path: '/homework' },
 ]
 
 const quickCommands = [
+  '平抛运动课件生成',
+  '匀变速直线运动组卷',
   '用上传的单摆视频生成受力分析课件',
-  '基于高考考纲出一套电磁感应大题',
-  '把这份Word教案转化为H5互动版',
   '分析这次月考的班级薄弱知识点',
 ]
+
+const intentRoute = {
+  lesson_plan: '/lesson',
+  classroom: '/classroom',
+  homework: '/homework',
+}
 
 const progressSteps = [
   { icon: '🔍', text: '正在检索本地高考考纲与人教版教材...' },
@@ -30,6 +38,7 @@ const progressSteps = [
 ]
 
 export default function Chat() {
+  const navigate = useNavigate()
   const [input, setInput] = useState('')
   const [workspaceOpen, setWorkspaceOpen] = useState(false)
   const [generating, setGenerating] = useState(false)
@@ -37,6 +46,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([])
   const [hoveredElement, setHoveredElement] = useState(null)
   const [inlinePopover, setInlinePopover] = useState(null)
+  const [intentLoading, setIntentLoading] = useState(false)
 
   useEffect(() => {
     if (!generating) return
@@ -48,11 +58,31 @@ export default function Chat() {
     return () => clearTimeout(t)
   }, [generating, progressIndex])
 
-  const handleSend = (text) => {
-    const content = text ?? input
-    if (!content.trim()) return
-    setMessages([...messages, { role: 'user', text: content }])
+  const handleSend = async (text) => {
+    const content = (text ?? input).trim()
+    if (!content) return
     setInput('')
+
+    // On homepage: call DeepSeek intent detection, then route
+    if (!workspaceOpen) {
+      setIntentLoading(true)
+      try {
+        const result = await detectIntent(content)
+        const path = intentRoute[result?.intent]
+        if (path) {
+          const topic = result?.topic ? `?topic=${encodeURIComponent(result.topic)}` : ''
+          navigate(path + topic)
+          return
+        }
+      } catch (err) {
+        console.warn('Intent detection failed, falling back to workspace:', err)
+      } finally {
+        setIntentLoading(false)
+      }
+    }
+
+    // Fallback / continued conversation: split-view workspace
+    setMessages((m) => [...m, { role: 'user', text: content }])
     setWorkspaceOpen(true)
     setGenerating(true)
     setProgressIndex(0)
@@ -315,10 +345,11 @@ export default function Chat() {
       </div>
 
       {/* Quick tags */}
-      <div className="flex gap-2.5 mb-6 flex-wrap justify-center">
-        {quickTags.map(({ icon: Icon, label }) => (
+      <div className="flex gap-2.5 mb-4 flex-wrap justify-center">
+        {quickTags.map(({ icon: Icon, label, path }) => (
           <button
             key={label}
+            onClick={() => navigate(path)}
             className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-medium bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 transition-all"
           >
             <Icon className="w-3.5 h-3.5" />
@@ -326,6 +357,15 @@ export default function Chat() {
           </button>
         ))}
       </div>
+
+      {/* RAG download entry (V2.0 赛题要求) */}
+      <button
+        onClick={() => navigate('/cloud?tab=rag')}
+        className="mb-6 flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-medium bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 text-violet-700 hover:from-violet-100 hover:to-blue-100 transition-all"
+      >
+        <Download className="w-3.5 h-3.5" />
+        人教版高中物理 RAG 知识库 · 一键下载
+      </button>
 
       {/* Input box */}
       <div className="w-full max-w-[720px] mb-5">
@@ -359,10 +399,11 @@ export default function Chat() {
               </button>
               <button
                 onClick={() => handleSend()}
-                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200"
+                disabled={intentLoading}
+                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm shadow-blue-200"
                 title="发送"
               >
-                <SendHorizontal className="w-4.5 h-4.5" />
+                {intentLoading ? <Loader2 className="w-4.5 h-4.5 animate-spin" /> : <SendHorizontal className="w-4.5 h-4.5" />}
               </button>
             </div>
           </div>
