@@ -334,14 +334,10 @@ export default function Cloud() {
                   <span className="absolute inset-0 rounded-xl ring-1 ring-white/40" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <div className="flex items-center gap-2 mb-2.5 flex-wrap">
                     <h3 className="text-[14px] font-semibold text-slate-800">人教版高中物理 RAG 知识库</h3>
                     <span className="text-[10px] px-2 py-0.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-full shadow-sm">赛题必备</span>
-                    <span className="text-[10px] px-2 py-0.5 bg-emerald-100/80 text-emerald-700 rounded-full border border-emerald-300/40">可下载 · 可部署</span>
                   </div>
-                  <p className="text-[12px] text-slate-600 mb-2.5 leading-relaxed">
-                    覆盖高中物理 7 大章节 · 30 个知识点 × 6 维度（教学设计/实验素材/例题/版式/学史），all-MiniLM-L6-v2 + Chroma 一键本地部署，满足赛题「本地知识库 RAG」强制要求。
-                  </p>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={downloadRagPack}
