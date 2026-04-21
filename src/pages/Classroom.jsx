@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp, Search, Database } from 'lucide-react'
+import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp, Search, Database, Sparkles } from 'lucide-react'
 import { KB_CHAPTERS, chapterKeywords } from '../lib/kb'
 
 const questions = [
@@ -115,8 +115,8 @@ export default function Classroom() {
   return (
     <div className="flex h-full fade-in-up">
       {/* Left config */}
-      <div className="w-[280px] bg-white border-r border-gray-100 p-5 shrink-0 overflow-y-auto">
-        <h2 className="text-[15px] font-semibold text-gray-800 mb-4">组卷配置</h2>
+      <div className="w-[290px] glass-panel border-t-0 border-b-0 border-l-0 p-5 shrink-0 overflow-y-auto">
+        <h2 className="text-[15px] font-semibold text-slate-800 mb-4 tracking-tight">组卷配置</h2>
 
         <div className="space-y-4">
           <div className="flex items-center gap-1.5 text-[11px] text-violet-600 bg-violet-50 border border-violet-100 rounded-lg px-2 py-1.5">
@@ -196,7 +196,8 @@ export default function Classroom() {
             </div>
           </div>
 
-          <button className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-[13px] font-medium rounded-lg hover:opacity-90 transition-opacity mt-2">
+          <button className="group w-full py-2.5 bg-gradient-to-br from-primary to-indigo-accent text-white text-[13px] font-semibold rounded-xl btn-press shadow-lg shadow-indigo-500/25 mt-2 cursor-pointer flex items-center justify-center gap-1.5">
+            <Sparkles className="w-4 h-4 icon-spin-hover" />
             生成试卷
           </button>
         </div>
@@ -205,15 +206,15 @@ export default function Classroom() {
       {/* Right questions */}
       <div className="flex-1 p-5 overflow-y-auto min-h-0 min-w-0">
         {/* Keyword search (per 合作人反馈) */}
-        <div className="mb-4 bg-white rounded-2xl border border-gray-100 p-3 flex items-center gap-2">
-          <Search className="w-4 h-4 text-gray-400 ml-1" />
+        <div className="mb-4 glass-card rounded-2xl p-3 flex items-center gap-2">
+          <Search className="w-4 h-4 text-slate-400 ml-1 icon-pulse-hover" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="输入关键词精准搜题（知识点、题型、年份、来源）..."
-            className="flex-1 text-[13px] text-gray-700 placeholder-gray-400 bg-transparent outline-none"
+            className="flex-1 text-[13px] text-slate-700 placeholder-slate-400 bg-transparent outline-none"
           />
-          <button className="px-3 py-1 text-[12px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">搜题</button>
+          <button className="px-3 py-1.5 text-[12px] bg-gradient-to-br from-primary to-indigo-accent text-white rounded-lg btn-press shadow-md shadow-indigo-500/25 cursor-pointer">搜题</button>
         </div>
 
         <div className="mb-3 flex items-center gap-2 text-[12px] text-gray-500 flex-wrap">
@@ -225,27 +226,27 @@ export default function Classroom() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[15px] font-medium text-gray-800">题目列表 <span className="text-gray-400 text-[13px]">({filtered.length}题)</span></h2>
           <div className="flex gap-2">
-            <button onClick={() => setShowAnswers(!showAnswers)} className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
-              {showAnswers ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+            <button onClick={() => setShowAnswers(!showAnswers)} className="group flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-slate-600 glass-card rounded-lg btn-press cursor-pointer">
+              {showAnswers ? <EyeOff className="w-3.5 h-3.5 icon-pulse-hover" /> : <Eye className="w-3.5 h-3.5 icon-pulse-hover" />}
               {showAnswers ? '隐藏答案' : '显示答案'}
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
-              <Copy className="w-3.5 h-3.5" /> 复制全部
+            <button className="group flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-slate-600 glass-card rounded-lg btn-press cursor-pointer">
+              <Copy className="w-3.5 h-3.5 icon-wobble-hover" /> 复制全部
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-              <Download className="w-3.5 h-3.5" /> 导出试卷
+            <button className="group flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-white bg-gradient-to-br from-primary to-indigo-accent rounded-lg btn-press shadow-lg shadow-indigo-500/25 cursor-pointer">
+              <Download className="w-3.5 h-3.5 icon-bounce-hover" /> 导出试卷
             </button>
           </div>
         </div>
 
         <div className="space-y-4">
           {filtered.length === 0 && (
-            <div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-400 text-[13px]">
+            <div className="glass-card rounded-xl p-8 text-center text-slate-400 text-[13px]">
               当前筛选下题库为空，请切换章节/知识点或清空搜索关键词
             </div>
           )}
           {filtered.map((q) => (
-            <div key={q.id} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-sm transition-shadow">
+            <div key={q.id} className="glass-card rounded-xl p-5 lift-hover">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-[12px] flex items-center justify-center font-medium">{q.id}</span>
                 <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{q.type}</span>

@@ -243,11 +243,11 @@ export default function Cloud() {
   return (
     <div className="flex h-full fade-in-up">
       {/* Folder tree */}
-      <div className="w-[200px] bg-white border-r border-gray-100 p-4 shrink-0" data-tour="folder-tree">
+      <div className="w-[210px] glass-panel border-t-0 border-b-0 border-l-0 p-4 shrink-0" data-tour="folder-tree">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[13px] font-medium text-gray-800">我的云盘</span>
-          <button className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors">
-            <Plus className="w-4 h-4" />
+          <span className="text-[13px] font-semibold text-slate-800 tracking-tight">我的云盘</span>
+          <button className="p-1 text-slate-400 hover:text-indigo-accent hover:bg-white/70 rounded btn-press cursor-pointer">
+            <Plus className="w-4 h-4 icon-spin-hover" />
           </button>
         </div>
         {['全部文件', ...CATEGORIES].map((name) => {
@@ -256,57 +256,57 @@ export default function Cloud() {
             <div
               key={name}
               onClick={() => { setActiveCategory(name); setSelected(new Set()) }}
-              className={`flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer transition-colors ${
-                active ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'
+              className={`group flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                active ? 'bg-gradient-to-r from-indigo-500/15 to-blue-500/10 text-indigo-accent font-medium' : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
               }`}
             >
-              {active ? <FolderOpen className="w-4 h-4 shrink-0" /> : <Folder className="w-4 h-4 shrink-0" />}
+              {active ? <FolderOpen className="w-4 h-4 shrink-0 icon-bounce-hover" /> : <Folder className="w-4 h-4 shrink-0 icon-bounce-hover" />}
               <span className="text-[12px] flex-1 truncate">{name}</span>
-              <span className="text-[10px] text-gray-400">{counts[name] || 0}</span>
+              <span className={`text-[10px] font-mono ${active ? 'text-indigo-accent' : 'text-slate-400'}`}>{counts[name] || 0}</span>
             </div>
           )
         })}
 
-        <div className="mt-4 p-2.5 rounded-lg bg-emerald-50 border border-emerald-100">
+        <div className="mt-4 p-3 rounded-xl glass-subtle border border-emerald-300/50" style={{ background: 'linear-gradient(135deg, rgba(209,250,229,0.7), rgba(236,253,245,0.5))' }}>
           <div className="flex items-center gap-1 text-emerald-700 mb-1">
-            <Wand2 className="w-3.5 h-3.5" />
-            <span className="text-[11px] font-medium">自动分类已启用</span>
+            <Wand2 className="w-3.5 h-3.5 icon-wobble-hover" />
+            <span className="text-[11px] font-semibold">自动分类已启用</span>
           </div>
-          <p className="text-[10px] text-emerald-600 leading-relaxed">基于文件名关键词 + 类型自动归类</p>
+          <p className="text-[10px] text-emerald-700/80 leading-relaxed">基于文件名关键词 + 类型自动归类</p>
         </div>
 
-        <div className="mt-4 p-3 bg-gray-50 rounded-xl">
-          <div className="flex items-center gap-1.5 mb-1">
-            <HardDrive className="w-3.5 h-3.5 text-gray-500" />
-            <span className="text-[11px] text-gray-600 font-medium">存储空间</span>
+        <div className="mt-4 p-3 glass-subtle rounded-xl">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <HardDrive className="w-3.5 h-3.5 text-slate-500 icon-pulse-hover" />
+            <span className="text-[11px] text-slate-700 font-semibold">存储空间</span>
           </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-1">
-            <div className="h-full bg-blue-600 rounded-full" style={{ width: '35%' }} />
+          <div className="h-2 bg-slate-200/60 rounded-full overflow-hidden mb-1">
+            <div className="h-full rounded-full bg-gradient-to-r from-primary to-indigo-accent shimmer-bg" style={{ width: '35%' }} />
           </div>
-          <span className="text-[10px] text-gray-400">3.5 GB / 10 GB</span>
+          <span className="text-[10px] text-slate-500 font-mono">3.5 GB / 10 GB</span>
         </div>
       </div>
 
       {/* Main */}
       <div className="flex-1 p-5 overflow-auto min-h-0 min-w-0">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-            <button onClick={() => setActiveTab('files')} className={`px-4 py-1.5 text-[13px] rounded-md transition-all ${activeTab === 'files' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'text-gray-600'}`}>
+          <div className="flex gap-1 glass-subtle p-1 rounded-xl">
+            <button onClick={() => setActiveTab('files')} className={`px-4 py-1.5 text-[13px] rounded-lg transition-all cursor-pointer ${activeTab === 'files' ? 'bg-white text-indigo-accent font-semibold shadow-md shadow-indigo-500/10' : 'text-slate-600 hover:text-slate-900'}`}>
               文件管理
             </button>
-            <button onClick={() => setActiveTab('graph')} className={`px-4 py-1.5 text-[13px] rounded-md transition-all flex items-center gap-1 ${activeTab === 'graph' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'text-gray-600'}`}>
-              <Network className="w-3.5 h-3.5" /> 我的教学图谱
+            <button onClick={() => setActiveTab('graph')} className={`group px-4 py-1.5 text-[13px] rounded-lg transition-all flex items-center gap-1 cursor-pointer ${activeTab === 'graph' ? 'bg-white text-indigo-accent font-semibold shadow-md shadow-indigo-500/10' : 'text-slate-600 hover:text-slate-900'}`}>
+              <Network className="w-3.5 h-3.5 icon-spin-hover" /> 我的教学图谱
             </button>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setTourOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 text-[12px] text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors font-medium"
+              className="group flex items-center gap-1.5 px-3 py-2 text-[12px] text-orange-600 bg-orange-50/80 border border-orange-200/70 backdrop-blur rounded-xl btn-press font-medium cursor-pointer hover:bg-orange-100/80"
             >
-              <PlayCircle className="w-3.5 h-3.5" /> 一键演示
+              <PlayCircle className="w-3.5 h-3.5 icon-spin-hover" /> 一键演示
             </button>
-            <button className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-[12px] rounded-lg hover:bg-blue-700 transition-colors">
-              <Upload className="w-3.5 h-3.5" /> 上传文件
+            <button className="group flex items-center gap-1.5 px-4 py-2 bg-gradient-to-br from-primary to-indigo-accent text-white text-[12px] rounded-xl btn-press shadow-lg shadow-indigo-500/25 cursor-pointer">
+              <Upload className="w-3.5 h-3.5 icon-bounce-hover" /> 上传文件
             </button>
           </div>
         </div>
@@ -316,32 +316,39 @@ export default function Cloud() {
             {/* RAG pack card */}
             <div
               data-tour="rag-card"
-              className={`mb-4 p-4 rounded-2xl border transition-all ${
-                highlightRag ? 'border-violet-400 bg-gradient-to-r from-violet-50 to-blue-50 ring-4 ring-violet-200' :
-                'border-violet-200 bg-gradient-to-r from-violet-50/60 to-blue-50/60'
+              className={`relative mb-4 p-4 rounded-2xl overflow-hidden glass-card transition-all ${
+                highlightRag ? 'ring-4 ring-violet-300/60' : ''
               }`}
+              style={{
+                background: highlightRag
+                  ? 'linear-gradient(120deg, rgba(237,233,254,0.95), rgba(219,234,254,0.85))'
+                  : 'linear-gradient(120deg, rgba(245,243,255,0.82), rgba(239,246,255,0.72))',
+              }}
             >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0">
-                  <Database className="w-5 h-5 text-white" />
+              {/* decorative molecules */}
+              <div className="pointer-events-none absolute -top-8 -right-8 w-36 h-36 rounded-full border border-violet-300/40" />
+              <div className="pointer-events-none absolute top-4 -right-14 w-24 h-24 rounded-full border border-indigo-300/30" />
+              <div className="relative flex items-start gap-3">
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/30">
+                  <Database className="w-5 h-5 text-white icon-pulse-hover" />
+                  <span className="absolute inset-0 rounded-xl ring-1 ring-white/40" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-[14px] font-semibold text-gray-800">人教版高中物理 RAG 知识库</h3>
-                    <span className="text-[10px] px-2 py-0.5 bg-violet-600 text-white rounded-full">赛题必备</span>
-                    <span className="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-600 rounded-full">可下载 · 可部署</span>
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <h3 className="text-[14px] font-semibold text-slate-800">人教版高中物理 RAG 知识库</h3>
+                    <span className="text-[10px] px-2 py-0.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-full shadow-sm">赛题必备</span>
+                    <span className="text-[10px] px-2 py-0.5 bg-emerald-100/80 text-emerald-700 rounded-full border border-emerald-300/40">可下载 · 可部署</span>
                   </div>
-                  <p className="text-[12px] text-gray-600 mb-2">
+                  <p className="text-[12px] text-slate-600 mb-2.5 leading-relaxed">
                     覆盖高中物理 7 大章节 · 30 个知识点 × 6 维度（教学设计/实验素材/例题/版式/学史），all-MiniLM-L6-v2 + Chroma 一键本地部署，满足赛题「本地知识库 RAG」强制要求。
                   </p>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={downloadRagPack}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 text-white text-[12px] rounded-lg hover:bg-violet-700"
+                      className="group flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-br from-violet-600 to-indigo-600 text-white text-[12px] rounded-xl btn-press shadow-md shadow-violet-500/30 cursor-pointer"
                     >
-                      <Download className="w-3.5 h-3.5" /> 一键下载 rag-pack.zip
+                      <Download className="w-3.5 h-3.5 icon-bounce-hover" /> 一键下载 rag-pack.zip
                     </button>
-                    <span className="text-[11px] text-gray-400">knowledge.json · build_db.py · start_rag.py · requirements.txt · README.md</span>
                   </div>
                 </div>
               </div>
@@ -416,7 +423,7 @@ export default function Cloud() {
 
             {/* File list */}
             {visibleFiles.length === 0 ? (
-              <div className="bg-white rounded-xl border border-gray-100 p-12 text-center text-gray-400 text-[13px]">
+              <div className="glass-card rounded-xl p-12 text-center text-slate-400 text-[13px]">
                 该分类下暂无文件
               </div>
             ) : viewMode === 'grid' ? (
@@ -430,8 +437,8 @@ export default function Cloud() {
                       key={f.id}
                       {...tourAttr}
                       onClick={() => editable && setEditingFile(f)}
-                      className={`relative bg-white rounded-2xl border p-4 hover:shadow-md transition-all group ${
-                        checked ? 'border-blue-400 ring-2 ring-blue-100' : 'border-gray-100 hover:border-blue-200'
+                      className={`relative glass-card rounded-2xl p-4 transition-all group ${
+                        checked ? 'ring-2 ring-indigo-300' : ''
                       } ${editable ? 'cursor-pointer' : ''}`}
                     >
                       <button
@@ -469,8 +476,8 @@ export default function Cloud() {
                 })}
               </div>
             ) : (
-              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                <div className="grid grid-cols-[36px_1fr_100px_100px_120px_120px_80px] items-center text-[11px] text-gray-400 px-3 py-2 border-b border-gray-100 bg-gray-50">
+              <div className="glass-card rounded-xl overflow-hidden">
+                <div className="grid grid-cols-[36px_1fr_100px_100px_120px_120px_80px] items-center text-[11px] text-slate-500 font-medium px-3 py-2 border-b border-slate-200/60 bg-white/40">
                   <span />
                   <span>文件名</span>
                   <span>类型</span>
@@ -522,8 +529,8 @@ export default function Cloud() {
             )}
           </>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
-            <h3 className="text-[14px] font-medium text-gray-800 mb-4">知识点关联图谱</h3>
+          <div className="glass-card rounded-xl p-5">
+            <h3 className="text-[14px] font-semibold text-slate-800 mb-4 tracking-tight">知识点关联图谱</h3>
             <KnowledgeGraph />
             <p className="text-[12px] text-gray-400 text-center mt-3">节点大小表示关联资源数量，连线表示知识点关联关系</p>
           </div>

@@ -123,21 +123,21 @@ export default function Homework() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-5">
-        <div className="bg-white rounded-xl p-4 border border-gray-100">
+        <div className="glass-card rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <Users className="w-4 h-4 text-blue-600" />
             <span className="text-[12px] text-gray-500">学生数</span>
           </div>
           <div className="text-2xl font-bold text-gray-800">30</div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-100">
+        <div className="glass-card rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="w-4 h-4 text-emerald-600" />
             <span className="text-[12px] text-gray-500">平均分</span>
           </div>
           <div className="text-2xl font-bold text-gray-800">78<span className="text-[14px] text-gray-400">/100</span></div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-100">
+        <div className="glass-card rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <AlertTriangle className="w-4 h-4 text-red-500" />
             <span className="text-[12px] text-gray-500">高考风险警告</span>
@@ -147,15 +147,15 @@ export default function Homework() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 mb-5 glass-subtle p-1 rounded-xl w-fit">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 text-[13px] rounded-md transition-all ${
+            className={`px-4 py-2 text-[13px] rounded-lg transition-all cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-white text-blue-600 font-medium shadow-sm'
-                : 'text-gray-600 hover:text-gray-800'
+                ? 'bg-white text-indigo-accent font-semibold shadow-md shadow-indigo-500/10'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             {tab.label}
@@ -168,7 +168,7 @@ export default function Homework() {
         <>
         <div className="grid grid-cols-2 gap-5 slide-in mb-5">
           {/* Top errors */}
-          <div className="bg-white rounded-xl p-5 border border-gray-100">
+          <div className="glass-card rounded-xl p-5">
             <h3 className="text-[14px] font-medium text-gray-800 mb-4">Top 3 共性错误</h3>
             <div className="space-y-3">
               {topErrors.map((e, i) => (
@@ -192,7 +192,7 @@ export default function Homework() {
           </div>
 
           {/* Bar chart */}
-          <div className="bg-white rounded-xl p-5 border border-gray-100">
+          <div className="glass-card rounded-xl p-5">
             <h3 className="text-[14px] font-medium text-gray-800 mb-4">各题正确率</h3>
             <div className="h-[240px]">
               <Bar data={barData} options={{
@@ -209,17 +209,18 @@ export default function Homework() {
         </div>
 
         {/* 终极闭环 CTA: 错题转课件 */}
-        <div className="rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 p-[1.5px] shadow-lg shadow-blue-200/40">
-          <div className="rounded-2xl bg-white p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center shrink-0 shadow-md shadow-blue-200">
-              <Sparkles className="w-6 h-6 text-white" />
+        <div className="rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 p-[1.5px] shadow-xl shadow-indigo-500/25">
+          <div className="rounded-2xl glass-card p-5 flex items-center gap-4 border-none">
+            <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-accent flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/30 group">
+              <Sparkles className="w-6 h-6 text-white icon-spin-hover" />
+              <span className="absolute inset-0 rounded-xl ring-1 ring-white/40" />
             </div>
             <div className="flex-1">
-              <div className="text-[15px] font-semibold text-gray-800 mb-0.5">将共性错题转化为下节课复习大纲</div>
-              <div className="text-[12px] text-gray-500">携带 73% 受力分析、60% 加速度方向 错题数据，一键生成针对性补救课件，打通「测-评-练-教」闭环</div>
+              <div className="text-[15px] font-semibold text-slate-900 mb-0.5 tracking-tight">将共性错题转化为下节课复习大纲</div>
+              <div className="text-[12px] text-slate-500">携带 73% 受力分析、60% 加速度方向 错题数据，一键生成针对性补救课件，打通「测-评-练-教」闭环</div>
             </div>
-            <button className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-[13px] font-medium rounded-xl hover:opacity-90 transition-opacity shrink-0">
-              生成补救课件 <ChevronRight className="w-4 h-4" />
+            <button className="group flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-br from-primary to-indigo-accent text-white text-[13px] font-semibold rounded-xl btn-press shadow-lg shadow-indigo-500/30 shrink-0 cursor-pointer">
+              生成补救课件 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>
@@ -230,7 +231,7 @@ export default function Homework() {
         <div className="grid grid-cols-2 gap-5 slide-in">
           <div className="space-y-3">
             {students.map((s, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-gray-100 hover:shadow-sm transition-shadow cursor-pointer">
+              <div key={i} className="glass-card rounded-xl p-4 lift-hover cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-full ${s.avatar} flex items-center justify-center`}>
                     <User className="w-4 h-4 text-white" />
@@ -254,7 +255,7 @@ export default function Homework() {
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-xl p-5 border border-gray-100">
+          <div className="glass-card rounded-xl p-5">
             <div className="flex items-center gap-2 mb-4">
               <Target className="w-4 h-4 text-blue-600" />
               <h3 className="text-[14px] font-medium text-gray-800">知识点掌握度</h3>
@@ -273,21 +274,21 @@ export default function Homework() {
 
       {activeTab === 'practice' && (
         <div className="max-w-3xl slide-in">
-          <div className="flex items-start justify-between mb-4 bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-100 rounded-xl p-4">
+          <div className="flex items-start justify-between mb-4 glass-card rounded-xl p-4" style={{ background: 'linear-gradient(120deg, rgba(245,243,255,0.85), rgba(239,246,255,0.75))' }}>
             <div>
               <div className="flex items-center gap-1.5 mb-1">
-                <Sparkles className="w-4 h-4 text-violet-600" />
-                <span className="text-[13px] font-medium text-gray-800">分层巩固练习 · 学情驱动</span>
+                <Sparkles className="w-4 h-4 text-violet-600 icon-spin-hover" />
+                <span className="text-[13px] font-semibold text-slate-900 tracking-tight">分层巩固练习 · 学情驱动</span>
               </div>
-              <p className="text-[12px] text-gray-600">
+              <p className="text-[12px] text-slate-600 leading-relaxed">
                 基于本次月考共性错误（受力分析 73% · 加速度方向 60% · 摩擦力 45%）自动生成三级题目
               </p>
             </div>
             <button
               onClick={() => setPractice(shufflePractice())}
-              className="flex items-center gap-1 px-3 py-1.5 text-[12px] text-violet-700 bg-white border border-violet-200 rounded-lg hover:bg-violet-50 shrink-0"
+              className="group flex items-center gap-1 px-3 py-1.5 text-[12px] text-violet-700 bg-white/80 border border-violet-200 rounded-xl btn-press shrink-0 cursor-pointer"
             >
-              <RefreshCw className="w-3.5 h-3.5" /> 换一批
+              <RefreshCw className="w-3.5 h-3.5 icon-spin-hover" /> 换一批
             </button>
           </div>
 
@@ -305,7 +306,7 @@ export default function Homework() {
               </div>
               <div className="space-y-2">
                 {practice[tier].map((q, i) => (
-                  <div key={i} className="bg-white rounded-lg p-4 border border-gray-100 hover:border-violet-200 transition-colors">
+                  <div key={i} className="glass-card rounded-xl p-4 lift-hover">
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className={`w-5 h-5 rounded-full text-white text-[10px] flex items-center justify-center font-medium ${dotCls}`}>{i + 1}</span>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${badgeCls}`}>{tier}</span>

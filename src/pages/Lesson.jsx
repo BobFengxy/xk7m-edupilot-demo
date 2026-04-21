@@ -364,26 +364,32 @@ export default function Lesson() {
 function Step1({ topic, setTopic, onNext }) {
   return (
     <div className="flex-1 p-8 overflow-auto flex items-center justify-center">
-      <div className="w-full max-w-[560px] bg-white rounded-2xl shadow-sm p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <BookOpen className="w-5 h-5 text-blue-600" />
-          <h2 className="text-[16px] font-semibold text-gray-800">输入教学主题</h2>
+      <div className="relative w-full max-w-[560px] glass-card rounded-2xl p-7 overflow-hidden">
+        {/* decorative orbit */}
+        <div className="pointer-events-none absolute -top-14 -right-14 w-44 h-44 rounded-full border border-indigo-300/30" />
+        <div className="pointer-events-none absolute -top-6 -right-6 w-24 h-24 rounded-full border border-indigo-300/20" />
+        <div className="relative flex items-center gap-2 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-indigo-accent flex items-center justify-center shadow-lg shadow-indigo-500/25 group">
+            <BookOpen className="w-4.5 h-4.5 text-white icon-wobble-hover" />
+          </div>
+          <h2 className="text-[17px] font-semibold text-slate-900 tracking-tight">输入教学主题</h2>
         </div>
         <input
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           placeholder="如：平抛运动"
-          className="w-full px-4 py-3 text-[14px] border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300"
+          className="relative w-full px-4 py-3 text-[14px] glass-input rounded-xl outline-none text-slate-800 placeholder:text-slate-400"
         />
-        <label className="flex items-center gap-2 mt-4 text-[13px] text-gray-600 cursor-pointer">
-          <input type="checkbox" defaultChecked className="accent-blue-600" />
+        <label className="relative flex items-center gap-2 mt-4 text-[13px] text-slate-600 cursor-pointer">
+          <input type="checkbox" defaultChecked className="accent-indigo-600 w-4 h-4" />
           生成互动动画（平抛运动 Canvas 仿真）
         </label>
         <button
           onClick={() => topic.trim() && onNext()}
-          className="mt-5 w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-[14px] font-medium rounded-xl hover:opacity-90 transition-opacity"
+          className="group relative mt-5 w-full py-2.5 bg-gradient-to-br from-primary to-indigo-accent text-white text-[14px] font-semibold rounded-xl btn-press shadow-lg shadow-indigo-500/25 cursor-pointer flex items-center justify-center gap-1.5"
         >
           下一步 · 澄清需求
+          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
     </div>
@@ -393,14 +399,14 @@ function Step1({ topic, setTopic, onNext }) {
 function Step2({ topic, msgs, input, setInput, busy, onSubmit, onAcceptDefaults, currentQuestion, progress, total }) {
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="px-5 py-3 bg-white border-b border-gray-100 flex items-center justify-between">
+      <div className="px-5 py-3 glass-panel border-l-0 border-r-0 border-t-0 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-blue-600" />
-          <span className="text-[13px] font-medium text-gray-800">多轮对话澄清需求 · 「{topic}」</span>
+          <Sparkles className="w-4 h-4 text-indigo-accent icon-spin-hover" />
+          <span className="text-[13px] font-semibold text-slate-800 tracking-tight">多轮对话澄清需求 · 「{topic}」</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[11px] text-gray-500">进度 {progress}/{total}</span>
-          <button onClick={onAcceptDefaults} className="px-3 py-1 text-[11px] text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg">
+          <span className="text-[11px] text-slate-500 font-mono">进度 {progress}/{total}</span>
+          <button onClick={onAcceptDefaults} className="px-3 py-1 text-[11px] text-emerald-700 bg-emerald-50/80 border border-emerald-200/70 rounded-lg btn-press cursor-pointer">
             一键默认确认
           </button>
         </div>
@@ -410,7 +416,9 @@ function Step2({ topic, msgs, input, setInput, busy, onSubmit, onAcceptDefaults,
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} fade-in-up`}>
             <div className="max-w-[75%]">
               <div className={`px-4 py-2.5 rounded-2xl text-[13px] ${
-                m.role === 'user' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border border-gray-100'
+                m.role === 'user'
+                  ? 'bg-gradient-to-br from-primary to-indigo-accent text-white shadow-lg shadow-indigo-500/25'
+                  : 'glass-card text-slate-700'
               }`}>
                 {m.text}
               </div>

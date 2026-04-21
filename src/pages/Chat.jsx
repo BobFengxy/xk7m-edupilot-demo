@@ -373,11 +373,14 @@ export default function Chat() {
     <div className="h-full overflow-auto flex flex-col items-center px-6 pt-16 pb-8 fade-in-up">
       {/* Greeting */}
       <div className="w-full max-w-[720px] text-center mb-8">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-200/60">
-          <Sparkles className="w-7 h-7 text-white" />
+        <div className="relative w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-indigo-accent flex items-center justify-center shadow-2xl shadow-indigo-500/30 group cursor-pointer">
+          <Sparkles className="w-7 h-7 text-white icon-spin-hover" />
+          <span className="absolute inset-0 rounded-2xl ring-1 ring-white/40 pointer-events-none" />
+          {/* orbiting dot */}
+          <span className="pointer-events-none absolute left-1/2 top-1/2 w-1.5 h-1.5 -ml-[3px] -mt-[3px] rounded-full bg-cyan-300 shadow-[0_0_10px_2px_rgba(103,232,249,0.8)]" style={{ '--r': '36px', animation: 'orbit-dot 5.2s linear infinite' }} />
         </div>
-        <h1 className="text-[22px] font-semibold text-gray-800 mb-1.5 tracking-tight">您好，我是您的教研合伙人</h1>
-        <p className="text-[13px] text-gray-500">支持文字、语音、图片、视频多模态输入，懂老师的教学思路</p>
+        <h1 className="text-[26px] font-semibold text-slate-900 mb-1.5 tracking-tight leading-tight">您好，我是您的教研合伙人</h1>
+        <p className="text-[13px] text-slate-500">支持文字、语音、图片、视频多模态输入，懂老师的教学思路</p>
       </div>
 
       {/* Quick tags */}
@@ -386,9 +389,9 @@ export default function Chat() {
           <button
             key={label}
             onClick={() => navigate(path)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-medium bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 transition-all"
+            className="group flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-medium glass-card text-slate-600 hover:text-indigo-accent btn-press cursor-pointer"
           >
-            <Icon className="w-3.5 h-3.5" />
+            <Icon className="w-3.5 h-3.5 icon-bounce-hover" />
             {label}
           </button>
         ))}
@@ -397,15 +400,15 @@ export default function Chat() {
       {/* RAG download entry (V2.0 赛题要求) */}
       <button
         onClick={() => navigate('/cloud?tab=rag')}
-        className="mb-6 flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-medium bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 text-violet-700 hover:from-violet-100 hover:to-blue-100 transition-all"
+        className="group mb-6 flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 text-white btn-press shadow-lg shadow-violet-500/25 cursor-pointer"
       >
-        <Download className="w-3.5 h-3.5" />
+        <Download className="w-3.5 h-3.5 icon-bounce-hover" />
         人教版高中物理 RAG 知识库 · 一键下载
       </button>
 
       {/* Input box */}
       <div className="w-full max-w-[720px] mb-5">
-        <div className="bg-white rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.05)] p-4 border border-gray-100">
+        <div className="glass-card rounded-2xl p-4 shadow-[0_10px_40px_-10px_rgba(30,64,175,0.18)]">
           {attachments.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-2 pb-2 border-b border-gray-100">
               {attachments.map((a, i) => (
@@ -440,22 +443,22 @@ export default function Chat() {
             <div className="flex items-center gap-1">
               <input ref={fileInputRef} type="file" multiple onChange={handleFilePicked} accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.md,.txt,video/*" className="hidden" />
               <input ref={imageInputRef} type="file" multiple onChange={handleFilePicked} accept="image/*" className="hidden" />
-              <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="语音">
-                <Mic className="w-4.5 h-4.5" />
+              <button className="p-2 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/60 rounded-lg btn-press cursor-pointer" title="语音">
+                <Mic className="w-[18px] h-[18px] icon-pulse-hover" />
               </button>
-              <button onClick={() => fileInputRef.current?.click()} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="上传文件/视频">
-                <Paperclip className="w-4.5 h-4.5" />
+              <button onClick={() => fileInputRef.current?.click()} className="p-2 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/60 rounded-lg btn-press cursor-pointer" title="上传文件/视频">
+                <Paperclip className="w-[18px] h-[18px] icon-wobble-hover" />
               </button>
-              <button onClick={() => imageInputRef.current?.click()} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="上传图片">
-                <Camera className="w-4.5 h-4.5" />
+              <button onClick={() => imageInputRef.current?.click()} className="p-2 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/60 rounded-lg btn-press cursor-pointer" title="上传图片">
+                <Camera className="w-[18px] h-[18px] icon-bounce-hover" />
               </button>
               <button
                 onClick={() => handleSend()}
                 disabled={intentLoading}
-                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm shadow-blue-200"
+                className="group p-2 bg-gradient-to-br from-primary to-indigo-accent text-white rounded-lg disabled:opacity-50 btn-press shadow-lg shadow-indigo-500/30 cursor-pointer"
                 title="发送"
               >
-                {intentLoading ? <Loader2 className="w-4.5 h-4.5 animate-spin" /> : <SendHorizontal className="w-4.5 h-4.5" />}
+                {intentLoading ? <Loader2 className="w-[18px] h-[18px] animate-spin" /> : <SendHorizontal className="w-[18px] h-[18px] icon-bounce-hover" />}
               </button>
             </div>
           </div>
@@ -469,7 +472,7 @@ export default function Chat() {
             <button
               key={cmd}
               onClick={() => handleSend(cmd)}
-              className="px-4 py-2 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-full hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="px-4 py-2 text-[12px] text-slate-600 glass-card rounded-full hover:text-indigo-accent btn-press cursor-pointer"
             >
               {cmd}
             </button>

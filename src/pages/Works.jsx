@@ -34,7 +34,7 @@ export default function Works() {
         </div>
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input placeholder="搜索作品..." className="pl-9 pr-4 py-1.5 text-[13px] bg-white border border-gray-200 rounded-lg w-[200px] focus:outline-none focus:ring-2 focus:ring-blue-100" />
+          <input placeholder="搜索作品..." className="pl-9 pr-4 py-1.5 text-[13px] glass-input rounded-lg w-[220px] focus:outline-none text-slate-700 placeholder:text-slate-400" />
         </div>
       </div>
 
@@ -44,15 +44,15 @@ export default function Works() {
           <button
             key={label}
             onClick={() => setActive(label)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] transition-all ${
+            className={`group flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] btn-press cursor-pointer ${
               active === label
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-200'
+                ? 'bg-gradient-to-br from-primary to-indigo-accent text-white shadow-lg shadow-indigo-500/25'
+                : 'glass-card text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Icon className="w-3.5 h-3.5" />
+            <Icon className="w-3.5 h-3.5 icon-bounce-hover" />
             {label}
-            <span className={`text-[11px] ml-1 ${active === label ? 'text-blue-200' : 'text-gray-400'}`}>({count})</span>
+            <span className={`text-[11px] ml-1 ${active === label ? 'text-indigo-100' : 'text-slate-400'}`}>({count})</span>
           </button>
         ))}
       </div>
@@ -60,23 +60,26 @@ export default function Works() {
       {/* Grid */}
       <div className="grid grid-cols-3 gap-4">
         {works.map((work, i) => (
-          <div key={i} className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className={`bg-gradient-to-br ${work.gradient} h-[140px] p-5 flex flex-col justify-end relative`}>
-              <span className="absolute top-3 right-3 text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">{work.tag}</span>
-              <h3 className="text-white font-medium text-[14px]">{work.title}</h3>
-              <p className="text-white/60 text-[11px] mt-0.5">{work.type}</p>
+          <div key={i} className="glass-card rounded-2xl overflow-hidden lift-hover group cursor-pointer">
+            <div className={`bg-gradient-to-br ${work.gradient} h-[140px] p-5 flex flex-col justify-end relative overflow-hidden`}>
+              {/* decorative orbit */}
+              <span className="pointer-events-none absolute -top-6 -right-6 w-28 h-28 rounded-full border border-white/20" />
+              <span className="pointer-events-none absolute top-10 -right-10 w-20 h-20 rounded-full border border-white/10" />
+              <span className="absolute top-3 right-3 text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full backdrop-blur-sm ring-1 ring-white/30">{work.tag}</span>
+              <h3 className="relative text-white font-medium text-[14px]">{work.title}</h3>
+              <p className="relative text-white/70 text-[11px] mt-0.5">{work.type}</p>
             </div>
             <div className="p-4 flex items-center justify-between">
-              <span className="text-[11px] text-gray-400">{work.date}</span>
+              <span className="text-[11px] text-slate-400 font-mono">{work.date}</span>
               <div className="flex gap-1">
-                <button className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                  <Edit3 className="w-3.5 h-3.5" />
+                <button aria-label="编辑" className="p-1.5 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/70 rounded-lg btn-press cursor-pointer">
+                  <Edit3 className="w-3.5 h-3.5 icon-wobble-hover" />
                 </button>
-                <button className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                  <Eye className="w-3.5 h-3.5" />
+                <button aria-label="预览" className="p-1.5 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/70 rounded-lg btn-press cursor-pointer">
+                  <Eye className="w-3.5 h-3.5 icon-pulse-hover" />
                 </button>
-                <button className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                  <Download className="w-3.5 h-3.5" />
+                <button aria-label="下载" className="p-1.5 text-slate-400 hover:text-indigo-accent hover:bg-indigo-50/70 rounded-lg btn-press cursor-pointer">
+                  <Download className="w-3.5 h-3.5 icon-bounce-hover" />
                 </button>
               </div>
             </div>
