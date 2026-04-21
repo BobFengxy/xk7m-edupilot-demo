@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { Eye, EyeOff, Copy, Download, Check, ChevronDown, ChevronUp, Search, Database } from 'lucide-react'
+import { KB_CHAPTERS, chapterKeywords } from '../lib/kb'
 
 const questions = [
   {
@@ -87,6 +88,29 @@ const questions = [
 export default function Classroom() {
   const [showAnswers, setShowAnswers] = useState(false)
   const [expanded, setExpanded] = useState({})
+  const [chapter, setChapter] = useState(KB_CHAPTERS[2].chapter) // 曲线运动 默认
+  const [pointId, setPointId] = useState('all')
+  const [search, setSearch] = useState('')
+
+  const currentChapter = KB_CHAPTERS.find((c) => c.chapter === chapter) || KB_CHAPTERS[0]
+  const currentPoint = currentChapter.points.find((p) => p.id === pointId)
+
+  const filtered = useMemo(() => {
+    let list = questions
+    if (chapter && chapter !== 'all') {
+      const keys = chapterKeywords(chapter)
+      list = list.filter((q) => keys.some((k) => q.tags.some((t) => t.includes(k)) || q.question.includes(k)))
+    }
+    if (currentPoint) {
+      const pt = currentPoint.title.replace(/（.*?）/g, '')
+      list = list.filter((q) => q.tags.some((t) => t.includes(pt.slice(0, 2))) || q.question.includes(pt.slice(0, 2)))
+    }
+    if (search.trim()) {
+      const s = search.trim()
+      list = list.filter((q) => q.question.includes(s) || q.tags.some((t) => t.includes(s)) || q.source.includes(s))
+    }
+    return list
+  }, [chapter, currentPoint, search])
 
   return (
     <div className="flex h-full fade-in-up">
@@ -95,21 +119,35 @@ export default function Classroom() {
         <h2 className="text-[15px] font-semibold text-gray-800 mb-4">组卷配置</h2>
 
         <div className="space-y-4">
+          <div className="flex items-center gap-1.5 text-[11px] text-violet-600 bg-violet-50 border border-violet-100 rounded-lg px-2 py-1.5">
+            <Database className="w-3.5 h-3.5" />
+            章节与知识点由本地 RAG 知识库（30 知识点）提供
+          </div>
+
           <div>
-            <label className="text-[12px] text-gray-600 font-medium mb-1.5 block">章节主题</label>
-            <select className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-100">
-              <option>电磁感应</option>
-              <option>力学</option>
-              <option>光学</option>
+            <label className="text-[12px] text-gray-600 font-medium mb-1.5 block">章节（来自 KB）</label>
+            <select
+              value={chapter}
+              onChange={(e) => { setChapter(e.target.value); setPointId('all') }}
+              className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
+            >
+              {KB_CHAPTERS.map((c) => (
+                <option key={c.chapter} value={c.chapter}>{c.chapter}（{c.points.length}个知识点）</option>
+              ))}
             </select>
           </div>
 
           <div>
-            <label className="text-[12px] text-gray-600 font-medium mb-1.5 block">所属章节</label>
-            <select className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-100">
-              <option>第四章 电磁感应</option>
-              <option>4.1 法拉第电磁感应定律</option>
-              <option>4.2 楞次定律</option>
+            <label className="text-[12px] text-gray-600 font-medium mb-1.5 block">知识点</label>
+            <select
+              value={pointId}
+              onChange={(e) => setPointId(e.target.value)}
+              className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
+            >
+              <option value="all">全部知识点</option>
+              {currentChapter.points.map((p) => (
+                <option key={p.id} value={p.id}>{p.title}</option>
+              ))}
             </select>
           </div>
 
@@ -170,14 +208,22 @@ export default function Classroom() {
         <div className="mb-4 bg-white rounded-2xl border border-gray-100 p-3 flex items-center gap-2">
           <Search className="w-4 h-4 text-gray-400 ml-1" />
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="输入关键词精准搜题（知识点、题型、年份、来源）..."
             className="flex-1 text-[13px] text-gray-700 placeholder-gray-400 bg-transparent outline-none"
           />
           <button className="px-3 py-1 text-[12px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">搜题</button>
         </div>
 
+        <div className="mb-3 flex items-center gap-2 text-[12px] text-gray-500 flex-wrap">
+          <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full">KB · {chapter}</span>
+          {currentPoint && <span className="px-2 py-0.5 bg-violet-50 text-violet-600 rounded-full">知识点: {currentPoint.title}</span>}
+          {search && <span className="px-2 py-0.5 bg-amber-50 text-amber-600 rounded-full">关键词: {search}</span>}
+        </div>
+
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-[15px] font-medium text-gray-800">题目列表 <span className="text-gray-400 text-[13px]">({questions.length}题)</span></h2>
+          <h2 className="text-[15px] font-medium text-gray-800">题目列表 <span className="text-gray-400 text-[13px]">({filtered.length}题)</span></h2>
           <div className="flex gap-2">
             <button onClick={() => setShowAnswers(!showAnswers)} className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
               {showAnswers ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -193,7 +239,12 @@ export default function Classroom() {
         </div>
 
         <div className="space-y-4">
-          {questions.map((q) => (
+          {filtered.length === 0 && (
+            <div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-400 text-[13px]">
+              当前筛选下题库为空，请切换章节/知识点或清空搜索关键词
+            </div>
+          )}
+          {filtered.map((q) => (
             <div key={q.id} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-sm transition-shadow">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-[12px] flex items-center justify-center font-medium">{q.id}</span>

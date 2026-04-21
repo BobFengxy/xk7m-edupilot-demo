@@ -4,7 +4,7 @@ import {
   Search, BarChart3, BookOpen, ClipboardList, Sparkles,
   Mic, Paperclip, Camera, SendHorizontal, Wifi, Brain,
   Check, Loader2, Eye, ArrowRight, FileText, Save, X,
-  Edit3, Wand2, RefreshCw, Download
+  Edit3, Wand2, RefreshCw, Download, Image as ImageIcon, Film
 } from 'lucide-react'
 import { detectIntent } from '../lib/deepseek'
 
@@ -47,6 +47,24 @@ export default function Chat() {
   const [hoveredElement, setHoveredElement] = useState(null)
   const [inlinePopover, setInlinePopover] = useState(null)
   const [intentLoading, setIntentLoading] = useState(false)
+  const [attachments, setAttachments] = useState([])
+  const fileInputRef = useRef(null)
+  const imageInputRef = useRef(null)
+
+  const handleFilePicked = (e) => {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    const next = files.map((f) => ({
+      name: f.name,
+      size: f.size,
+      type: f.type,
+      kind: f.type.startsWith('image/') ? 'image' : f.type.startsWith('video/') ? 'video' : 'file',
+    }))
+    setAttachments((prev) => [...prev, ...next])
+    e.target.value = ''
+  }
+  const removeAttachment = (idx) => setAttachments((prev) => prev.filter((_, i) => i !== idx))
+  const formatSize = (b) => (b < 1024 ? b + 'B' : b < 1048576 ? (b / 1024).toFixed(1) + 'KB' : (b / 1048576).toFixed(1) + 'MB')
 
   useEffect(() => {
     if (!generating) return
@@ -60,8 +78,12 @@ export default function Chat() {
 
   const handleSend = async (text) => {
     const content = (text ?? input).trim()
-    if (!content) return
+    if (!content && attachments.length === 0) return
+    const attachSummary = attachments.length ? `\n\n[已附带 ${attachments.length} 个文件：${attachments.map((a) => a.name).join('、')}]` : ''
+    const finalContent = content + attachSummary
     setInput('')
+    const currentAttachments = attachments
+    setAttachments([])
 
     // On homepage: call DeepSeek intent detection, then route
     if (!workspaceOpen) {
@@ -82,7 +104,7 @@ export default function Chat() {
     }
 
     // Fallback / continued conversation: split-view workspace
-    setMessages((m) => [...m, { role: 'user', text: content }])
+    setMessages((m) => [...m, { role: 'user', text: finalContent, attachments: currentAttachments }])
     setWorkspaceOpen(true)
     setGenerating(true)
     setProgressIndex(0)
@@ -159,6 +181,19 @@ export default function Chat() {
           {/* Input */}
           <div className="p-4 border-t border-gray-100">
             <div className="bg-gray-50 rounded-2xl p-3">
+              {attachments.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-2 pb-2 border-b border-gray-200">
+                  {attachments.map((a, i) => (
+                    <div key={i} className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 border border-blue-100 rounded text-[11px] text-blue-700">
+                      {a.kind === 'image' ? <ImageIcon className="w-3 h-3" /> : a.kind === 'video' ? <Film className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
+                      <span className="max-w-[160px] truncate">{a.name}</span>
+                      <button onClick={() => removeAttachment(i)} className="p-0.5 hover:bg-blue-100 rounded">
+                        <X className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -169,10 +204,11 @@ export default function Chat() {
               />
               <div className="flex items-center justify-between mt-1">
                 <div className="flex items-center gap-1">
+                  <input ref={fileInputRef} type="file" multiple onChange={handleFilePicked} accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.md,.txt,image/*,video/*" className="hidden" />
                   <button className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-white rounded-lg transition-colors">
                     <Mic className="w-4 h-4" />
                   </button>
-                  <button className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-white rounded-lg transition-colors">
+                  <button onClick={() => fileInputRef.current?.click()} className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-white rounded-lg transition-colors" title="上传文件/图片/视频">
                     <Paperclip className="w-4 h-4" />
                   </button>
                 </div>
@@ -370,6 +406,20 @@ export default function Chat() {
       {/* Input box */}
       <div className="w-full max-w-[720px] mb-5">
         <div className="bg-white rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.05)] p-4 border border-gray-100">
+          {attachments.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2 pb-2 border-b border-gray-100">
+              {attachments.map((a, i) => (
+                <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-blue-50 border border-blue-100 rounded-lg text-[12px] text-blue-700">
+                  {a.kind === 'image' ? <ImageIcon className="w-3.5 h-3.5" /> : a.kind === 'video' ? <Film className="w-3.5 h-3.5" /> : <FileText className="w-3.5 h-3.5" />}
+                  <span className="max-w-[200px] truncate">{a.name}</span>
+                  <span className="text-[10px] text-blue-400">{formatSize(a.size)}</span>
+                  <button onClick={() => removeAttachment(i)} className="p-0.5 hover:bg-blue-100 rounded">
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -388,13 +438,15 @@ export default function Chat() {
               </span>
             </div>
             <div className="flex items-center gap-1">
+              <input ref={fileInputRef} type="file" multiple onChange={handleFilePicked} accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.md,.txt,video/*" className="hidden" />
+              <input ref={imageInputRef} type="file" multiple onChange={handleFilePicked} accept="image/*" className="hidden" />
               <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="语音">
                 <Mic className="w-4.5 h-4.5" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="文件">
+              <button onClick={() => fileInputRef.current?.click()} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="上传文件/视频">
                 <Paperclip className="w-4.5 h-4.5" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="图片">
+              <button onClick={() => imageInputRef.current?.click()} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="上传图片">
                 <Camera className="w-4.5 h-4.5" />
               </button>
               <button

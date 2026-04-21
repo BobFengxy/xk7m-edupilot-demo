@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Upload, Users, TrendingUp, AlertTriangle, Sparkles, ChevronRight, User, Target } from 'lucide-react'
+import { Upload, Users, TrendingUp, AlertTriangle, Sparkles, ChevronRight, User, Target, Download, RefreshCw, Layers } from 'lucide-react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js'
 import { Bar, Radar } from 'react-chartjs-2'
 
@@ -44,15 +44,38 @@ const radarData = {
   }]
 }
 
-const practiceQuestions = [
-  { q: '一个物体受三个共点力作用处于平衡状态，已知F1=3N，F2=4N，则F3的大小范围是？', diff: '基础', tag: '受力分析' },
-  { q: '物体沿斜面匀速下滑，画出其受力分析图并求摩擦力。', diff: '中等', tag: '摩擦力' },
-  { q: '在光滑水平面上，质量为2kg的物体受到水平拉力F=6N的作用，求加速度的大小和方向。', diff: '基础', tag: '加速度方向' },
-]
+// 基于班级共性错误（受力分析 73% / 加速度方向 60% / 摩擦力 45%）生成的分层巩固题
+const practicePool = {
+  基础: [
+    { q: '一个物体受三个共点力作用处于平衡状态，已知 F1=3N，F2=4N，则 F3 的大小范围是？', tag: '受力分析' },
+    { q: '在光滑水平面上，质量为 2kg 的物体受到水平拉力 F=6N 的作用，求加速度的大小和方向。', tag: '加速度方向' },
+    { q: '质量为 5kg 的物体静止在水平面上，动摩擦因数 μ=0.3，求其受到的摩擦力大小。', tag: '摩擦力' },
+    { q: '画出斜面上匀速下滑木块的受力分析图，并标注各力方向。', tag: '受力分析' },
+  ],
+  提升: [
+    { q: '物体沿斜面（倾角 30°）匀速下滑，求动摩擦因数 μ。', tag: '摩擦力' },
+    { q: '汽车以 v₀=20m/s 刹车，加速度 a=-4m/s²。求 10s 内位移。（注意“陷阱”）', tag: '加速度方向' },
+    { q: '小物块在粗糙水平面以 5m/s 滑出，滑行 6.25m 停下。求动摩擦因数。', tag: '摩擦力' },
+  ],
+  挑战: [
+    { q: '质量 m 的物体放在倾角 θ 的斜面上，斜面以 a 水平向左加速。讨论当 a 变化时物体相对斜面的趋势与摩擦力大小。', tag: '受力分析' },
+    { q: '两木块 A(2kg)、B(3kg) 叠放，A 在 B 上。μ_AB=0.5, μ_B地=0.2。对 A 施水平力 F。分析 F 在多大范围内两者可相对静止共同运动。', tag: '受力分析' },
+  ],
+}
+
+function shufflePractice() {
+  const pick = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n)
+  return {
+    基础: pick(practicePool.基础, 3),
+    提升: pick(practicePool.提升, 2),
+    挑战: pick(practicePool.挑战, 2),
+  }
+}
 
 export default function Homework() {
   const [uploaded, setUploaded] = useState(false)
   const [activeTab, setActiveTab] = useState('class')
+  const [practice, setPractice] = useState(() => shufflePractice())
 
   const tabs = [
     { id: 'class', label: '班级分析' },
@@ -249,28 +272,60 @@ export default function Homework() {
       )}
 
       {activeTab === 'practice' && (
-        <div className="max-w-2xl slide-in">
-          <div className="flex items-center gap-1.5 mb-4">
-            <Sparkles className="w-4 h-4 text-violet-600" />
-            <span className="text-[13px] text-gray-600">基于班级共性错误自动生成巩固练习</span>
-          </div>
-          <div className="space-y-3">
-            {practiceQuestions.map((q, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 border border-gray-100">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-6 h-6 rounded-full bg-violet-600 text-white text-[11px] flex items-center justify-center font-medium">{i + 1}</span>
-                  <span className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    q.diff === '基础' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
-                  }`}>{q.diff}</span>
-                  <span className="text-[11px] bg-red-50 text-red-500 px-2 py-0.5 rounded-full">针对: {q.tag}</span>
-                </div>
-                <p className="text-[13px] text-gray-800 leading-relaxed">{q.q}</p>
+        <div className="max-w-3xl slide-in">
+          <div className="flex items-start justify-between mb-4 bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-100 rounded-xl p-4">
+            <div>
+              <div className="flex items-center gap-1.5 mb-1">
+                <Sparkles className="w-4 h-4 text-violet-600" />
+                <span className="text-[13px] font-medium text-gray-800">分层巩固练习 · 学情驱动</span>
               </div>
-            ))}
+              <p className="text-[12px] text-gray-600">
+                基于本次月考共性错误（受力分析 73% · 加速度方向 60% · 摩擦力 45%）自动生成三级题目
+              </p>
+            </div>
+            <button
+              onClick={() => setPractice(shufflePractice())}
+              className="flex items-center gap-1 px-3 py-1.5 text-[12px] text-violet-700 bg-white border border-violet-200 rounded-lg hover:bg-violet-50 shrink-0"
+            >
+              <RefreshCw className="w-3.5 h-3.5" /> 换一批
+            </button>
           </div>
-          <button className="mt-4 flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-[12px] rounded-lg hover:bg-blue-700 transition-colors">
-            <Download className="w-3.5 h-3.5" /> 导出练习题
-          </button>
+
+          {[
+            { tier: '基础', label: '基础巩固', hint: '薄弱点 ≥ 60% 的学生优先完成', iconCls: 'text-emerald-600', badgeCls: 'bg-emerald-50 text-emerald-600', dotCls: 'bg-emerald-600' },
+            { tier: '提升', label: '能力提升', hint: '60-80 分段学生进阶练习', iconCls: 'text-amber-600', badgeCls: 'bg-amber-50 text-amber-600', dotCls: 'bg-amber-600' },
+            { tier: '挑战', label: '高考挑战', hint: '优秀生挑战真题改编难度', iconCls: 'text-red-600', badgeCls: 'bg-red-50 text-red-600', dotCls: 'bg-red-600' },
+          ].map(({ tier, label, hint, iconCls, badgeCls, dotCls }) => (
+            <div key={tier} className="mb-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Layers className={`w-4 h-4 ${iconCls}`} />
+                <h3 className="text-[13px] font-semibold text-gray-800">{label}</h3>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${badgeCls}`}>{practice[tier].length} 题</span>
+                <span className="text-[11px] text-gray-400">{hint}</span>
+              </div>
+              <div className="space-y-2">
+                {practice[tier].map((q, i) => (
+                  <div key={i} className="bg-white rounded-lg p-4 border border-gray-100 hover:border-violet-200 transition-colors">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className={`w-5 h-5 rounded-full text-white text-[10px] flex items-center justify-center font-medium ${dotCls}`}>{i + 1}</span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${badgeCls}`}>{tier}</span>
+                      <span className="text-[10px] bg-red-50 text-red-500 px-1.5 py-0.5 rounded-full">针对: {q.tag}</span>
+                    </div>
+                    <p className="text-[13px] text-gray-800 leading-relaxed">{q.q}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <div className="flex gap-2 mt-2">
+            <button className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-[12px] rounded-lg hover:bg-blue-700 transition-colors">
+              <Download className="w-3.5 h-3.5" /> 导出练习题
+            </button>
+            <button className="flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 text-gray-600 text-[12px] rounded-lg hover:bg-gray-50">
+              推送到学生端
+            </button>
+          </div>
         </div>
       )}
     </div>
